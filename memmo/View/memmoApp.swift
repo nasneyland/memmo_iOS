@@ -10,14 +10,16 @@ import SwiftUI
 @main
 struct memmoApp: App {
     
-    @StateObject var store = MemoStore()
+    // 모든 뷰에서 사용하는 공통 데이터 선언
+    @StateObject var viewModel = MemoViewModel()
     
     let persistenceController = PersistenceController.shared
     
     var body: some Scene {
         WindowGroup {
-            MemoListView(memoStore: MemoStore())
+            MemoListView(viewModel: viewModel)
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
+                .environmentObject(viewModel)
         }
     }
 }

@@ -14,9 +14,9 @@
 		FD42569F29992B3D00787AE9 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD42569E29992B3D00787AE9 /* Category.swift */; };
 		FD4256A129992C1400787AE9 /* Person.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD4256A029992C1400787AE9 /* Person.swift */; };
 		FD4256A329992C8700787AE9 /* Memo.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD4256A229992C8700787AE9 /* Memo.swift */; };
-		FD4256A529992CFF00787AE9 /* MemoStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD4256A429992CFF00787AE9 /* MemoStore.swift */; };
 		FD4256A72999300800787AE9 /* DetailMemoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD4256A62999300800787AE9 /* DetailMemoView.swift */; };
 		FD4256AC299CB69E00787AE9 /* ColorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD4256AB299CB69E00787AE9 /* ColorExtensions.swift */; };
+		FD4256C529A131E900787AE9 /* MemoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD4256C429A131E900787AE9 /* MemoViewModel.swift */; };
 		FD44D2242998FA1E00E8D0DD /* memmoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD44D2232998FA1E00E8D0DD /* memmoApp.swift */; };
 		FD44D2282998FA1F00E8D0DD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FD44D2272998FA1F00E8D0DD /* Assets.xcassets */; };
 		FD44D22B2998FA1F00E8D0DD /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FD44D22A2998FA1F00E8D0DD /* Preview Assets.xcassets */; };
@@ -52,9 +52,9 @@
 		FD42569E29992B3D00787AE9 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
 		FD4256A029992C1400787AE9 /* Person.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Person.swift; sourceTree = "<group>"; };
 		FD4256A229992C8700787AE9 /* Memo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Memo.swift; sourceTree = "<group>"; };
-		FD4256A429992CFF00787AE9 /* MemoStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoStore.swift; sourceTree = "<group>"; };
 		FD4256A62999300800787AE9 /* DetailMemoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailMemoView.swift; sourceTree = "<group>"; };
 		FD4256AB299CB69E00787AE9 /* ColorExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtensions.swift; sourceTree = "<group>"; };
+		FD4256C429A131E900787AE9 /* MemoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoViewModel.swift; sourceTree = "<group>"; };
 		FD44D2202998FA1E00E8D0DD /* memmo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = memmo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FD44D2232998FA1E00E8D0DD /* memmoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = memmoApp.swift; sourceTree = "<group>"; };
 		FD44D2272998FA1F00E8D0DD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -118,7 +118,6 @@
 				FD42569E29992B3D00787AE9 /* Category.swift */,
 				FD4256A029992C1400787AE9 /* Person.swift */,
 				FD4256A229992C8700787AE9 /* Memo.swift */,
-				FD4256A429992CFF00787AE9 /* MemoStore.swift */,
 			);
 			path = Memory;
 			sourceTree = "<group>";
@@ -148,6 +147,14 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		FD4256C329A131C500787AE9 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				FD4256C429A131E900787AE9 /* MemoViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
 		FD44D2172998FA1E00E8D0DD = {
 			isa = PBXGroup;
 			children = (
@@ -171,6 +178,7 @@
 		FD44D2222998FA1E00E8D0DD /* memmo */ = {
 			isa = PBXGroup;
 			children = (
+				FD4256C329A131C500787AE9 /* ViewModels */,
 				FD4256AA299CB68000787AE9 /* Extensions */,
 				FD4256A9299CB61D00787AE9 /* Utilities */,
 				FD42569D29992B2C00787AE9 /* Memory */,
@@ -341,11 +349,11 @@
 				FD4256A72999300800787AE9 /* DetailMemoView.swift in Sources */,
 				FD4256AC299CB69E00787AE9 /* ColorExtensions.swift in Sources */,
 				FD4256A129992C1400787AE9 /* Person.swift in Sources */,
-				FD4256A529992CFF00787AE9 /* MemoStore.swift in Sources */,
 				FD44D22D2998FA1F00E8D0DD /* Persistence.swift in Sources */,
 				FD42569C29991D9100787AE9 /* ProfileImage.swift in Sources */,
 				FD4256942999043500787AE9 /* MemoCell.swift in Sources */,
 				FD4256962999192700787AE9 /* ComposeMemoView.swift in Sources */,
+				FD4256C529A131E900787AE9 /* MemoViewModel.swift in Sources */,
 				FD44D2302998FA1F00E8D0DD /* memmo.xcdatamodeld in Sources */,
 				FD4256A329992C8700787AE9 /* Memo.swift in Sources */,
 				FD42569F29992B3D00787AE9 /* Category.swift in Sources */,

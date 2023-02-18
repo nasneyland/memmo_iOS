@@ -9,14 +9,14 @@ import SwiftUI
 
 struct MemoListView: View {
     
-    @ObservedObject var memoStore: MemoStore
+    @ObservedObject var viewModel: MemoViewModel
     
     @State private var showComposer: Bool = false
     
     var body: some View {
         NavigationView {
             List {
-                ForEach(memoStore.list) { memo in
+                ForEach(viewModel.list) { memo in
                     NavigationLink {
                         DetailMemoView(memo: memo)
                     } label: {
@@ -43,6 +43,6 @@ struct MemoListView: View {
 
 struct MemoListView_Previews: PreviewProvider {
     static var previews: some View {
-        MemoListView(memoStore: MemoStore())
+        MemoListView(viewModel: MemoViewModel())
     }
 }

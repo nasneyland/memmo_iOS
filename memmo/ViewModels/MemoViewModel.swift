@@ -1,15 +1,14 @@
 //
-//  MemoStore.swift
+//  MemoViewModel.swift
 //  memmo
 //
-//  Created by najin on 2023/02/12.
+//  Created by najin on 2023/02/19.
 //
 
-import Foundation
+import SwiftUI
 
-class MemoStore: ObservableObject {
-    
-    @Published var list: [Memo]
+class MemoViewModel: ObservableObject {
+    @Published var list: [Memo] = []
     
     init() {
         list = [
