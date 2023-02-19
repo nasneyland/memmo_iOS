@@ -6,20 +6,15 @@
 //
 
 import Foundation
+import RealmSwift
 import SwiftUI
 
-class Category: Identifiable, ObservableObject {
+class Category: Object, Identifiable {
     
-    //Identifiable 필수 속성
-    let id: UUID
+    @Persisted(primaryKey: true) var id: ObjectId
+    @Persisted var name: String
     
-    var name: String
-    var color: Color
-    
-    //생성자
-    init(name: String, color: Color = .gray) {
-        id = UUID()
-        self.name = name
-        self.color = color
+    override class func primaryKey() -> String? {
+        "id"
     }
 }

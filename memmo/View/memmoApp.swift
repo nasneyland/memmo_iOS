@@ -9,17 +9,22 @@ import SwiftUI
 
 @main
 struct memmoApp: App {
+    let persistenceController = PersistenceController.shared
     
     // 모든 뷰에서 사용하는 공통 데이터 선언
     @StateObject var viewModel = MemoViewModel()
     
-    let persistenceController = PersistenceController.shared
+    // 실행 초기 호출 코드
+    init() {
+        let _ = UserDefaults.standard.set(false, forKey: "_UIConstraintBasedLayoutLogUnsatisfiable")
+        print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!.path)
+    }
     
     var body: some Scene {
         WindowGroup {
-            MemoListView(viewModel: viewModel)
+            MemoListView()
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
-                .environmentObject(viewModel)
+                .environmentObject(viewModel) // 이어지는 뷰에서도 동일하게 사용 가능!
         }
     }
 }

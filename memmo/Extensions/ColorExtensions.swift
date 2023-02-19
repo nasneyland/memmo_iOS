@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-extension Color {
-    static let category01 = Color("category01")
-    static let category02 = Color("category02")
+enum ColorSet {
+//    var category01 = Color("category01")
+//    let category02 = Color("category02")
 }

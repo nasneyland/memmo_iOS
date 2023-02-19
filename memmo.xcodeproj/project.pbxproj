@@ -17,6 +17,9 @@
 		FD4256A72999300800787AE9 /* DetailMemoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD4256A62999300800787AE9 /* DetailMemoView.swift */; };
 		FD4256AC299CB69E00787AE9 /* ColorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD4256AB299CB69E00787AE9 /* ColorExtensions.swift */; };
 		FD4256C529A131E900787AE9 /* MemoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD4256C429A131E900787AE9 /* MemoViewModel.swift */; };
+		FD4256C829A1C68100787AE9 /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = FD4256C729A1C68100787AE9 /* Realm */; };
+		FD4256CA29A1C68100787AE9 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = FD4256C929A1C68100787AE9 /* RealmSwift */; };
+		FD4256D129A1E72B00787AE9 /* ComposeCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD4256D029A1E72A00787AE9 /* ComposeCategoryView.swift */; };
 		FD44D2242998FA1E00E8D0DD /* memmoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD44D2232998FA1E00E8D0DD /* memmoApp.swift */; };
 		FD44D2282998FA1F00E8D0DD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FD44D2272998FA1F00E8D0DD /* Assets.xcassets */; };
 		FD44D22B2998FA1F00E8D0DD /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FD44D22A2998FA1F00E8D0DD /* Preview Assets.xcassets */; };
@@ -55,6 +58,7 @@
 		FD4256A62999300800787AE9 /* DetailMemoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailMemoView.swift; sourceTree = "<group>"; };
 		FD4256AB299CB69E00787AE9 /* ColorExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtensions.swift; sourceTree = "<group>"; };
 		FD4256C429A131E900787AE9 /* MemoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoViewModel.swift; sourceTree = "<group>"; };
+		FD4256D029A1E72A00787AE9 /* ComposeCategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposeCategoryView.swift; sourceTree = "<group>"; };
 		FD44D2202998FA1E00E8D0DD /* memmo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = memmo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FD44D2232998FA1E00E8D0DD /* memmoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = memmoApp.swift; sourceTree = "<group>"; };
 		FD44D2272998FA1F00E8D0DD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -73,6 +77,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FD4256CA29A1C68100787AE9 /* RealmSwift in Frameworks */,
+				FD4256C829A1C68100787AE9 /* Realm in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -126,17 +132,11 @@
 			isa = PBXGroup;
 			children = (
 				FD425691299903A400787AE9 /* MemoListView.swift */,
+				FD4256D029A1E72A00787AE9 /* ComposeCategoryView.swift */,
 				FD4256952999192700787AE9 /* ComposeMemoView.swift */,
 				FD4256A62999300800787AE9 /* DetailMemoView.swift */,
 			);
 			path = Screens;
-			sourceTree = "<group>";
-		};
-		FD4256A9299CB61D00787AE9 /* Utilities */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Utilities;
 			sourceTree = "<group>";
 		};
 		FD4256AA299CB68000787AE9 /* Extensions */ = {
@@ -153,6 +153,23 @@
 				FD4256C429A131E900787AE9 /* MemoViewModel.swift */,
 			);
 			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		FD4256CB29A1C93D00787AE9 /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				FD44D22C2998FA1F00E8D0DD /* Persistence.swift */,
+				FD44D22E2998FA1F00E8D0DD /* memmo.xcdatamodeld */,
+			);
+			path = CoreData;
+			sourceTree = "<group>";
+		};
+		FD4256CC29A1C95F00787AE9 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				FD44D2272998FA1F00E8D0DD /* Assets.xcassets */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 		FD44D2172998FA1E00E8D0DD = {
@@ -178,15 +195,13 @@
 		FD44D2222998FA1E00E8D0DD /* memmo */ = {
 			isa = PBXGroup;
 			children = (
-				FD4256C329A131C500787AE9 /* ViewModels */,
-				FD4256AA299CB68000787AE9 /* Extensions */,
-				FD4256A9299CB61D00787AE9 /* Utilities */,
-				FD42569D29992B2C00787AE9 /* Memory */,
-				FD4256902999039700787AE9 /* View */,
-				FD44D2272998FA1F00E8D0DD /* Assets.xcassets */,
-				FD44D22C2998FA1F00E8D0DD /* Persistence.swift */,
-				FD44D22E2998FA1F00E8D0DD /* memmo.xcdatamodeld */,
+				FD4256CB29A1C93D00787AE9 /* CoreData */,
 				FD44D2292998FA1F00E8D0DD /* Preview Content */,
+				FD4256CC29A1C95F00787AE9 /* Resources */,
+				FD4256AA299CB68000787AE9 /* Extensions */,
+				FD42569D29992B2C00787AE9 /* Memory */,
+				FD4256C329A131C500787AE9 /* ViewModels */,
+				FD4256902999039700787AE9 /* View */,
 			);
 			path = memmo;
 			sourceTree = "<group>";
@@ -232,6 +247,10 @@
 			dependencies = (
 			);
 			name = memmo;
+			packageProductDependencies = (
+				FD4256C729A1C68100787AE9 /* Realm */,
+				FD4256C929A1C68100787AE9 /* RealmSwift */,
+			);
 			productName = memmo;
 			productReference = FD44D2202998FA1E00E8D0DD /* memmo.app */;
 			productType = "com.apple.product-type.application";
@@ -304,6 +323,9 @@
 				Base,
 			);
 			mainGroup = FD44D2172998FA1E00E8D0DD;
+			packageReferences = (
+				FD4256C629A1C68000787AE9 /* XCRemoteSwiftPackageReference "realm-cocoa" */,
+			);
 			productRefGroup = FD44D2212998FA1E00E8D0DD /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -359,6 +381,7 @@
 				FD42569F29992B3D00787AE9 /* Category.swift in Sources */,
 				FD425692299903A400787AE9 /* MemoListView.swift in Sources */,
 				FD44D2242998FA1E00E8D0DD /* memmoApp.swift in Sources */,
+				FD4256D129A1E72B00787AE9 /* ComposeCategoryView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -685,6 +708,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		FD4256C629A1C68000787AE9 /* XCRemoteSwiftPackageReference "realm-cocoa" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/realm/realm-cocoa.git";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		FD4256C729A1C68100787AE9 /* Realm */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FD4256C629A1C68000787AE9 /* XCRemoteSwiftPackageReference "realm-cocoa" */;
+			productName = Realm;
+		};
+		FD4256C929A1C68100787AE9 /* RealmSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FD4256C629A1C68000787AE9 /* XCRemoteSwiftPackageReference "realm-cocoa" */;
+			productName = RealmSwift;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		FD44D22E2998FA1F00E8D0DD /* memmo.xcdatamodeld */ = {

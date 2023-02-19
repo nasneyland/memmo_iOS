@@ -20,9 +20,9 @@ struct MemoCell: View {
                     Text(memo.person.name)
                         .font(.body)
                         .lineLimit(1)
-                    Text(memo.person.category.name)
+                    Text("catogory")
                         .padding(EdgeInsets(top: 3, leading: 8, bottom: 3, trailing: 8))
-                        .background(memo.person.category.color)
+//                        .background(memo.person.category.color)
                         .cornerRadius(8)
                         .font(.caption)
                         .lineLimit(1)
@@ -36,8 +36,8 @@ struct MemoCell: View {
     }
 }
 
-struct MemoCell_Previews: PreviewProvider {
-    static var previews: some View {
-        MemoCell(memo: Memo(emoji: "⭐", content: "test", person: Person(name: "test", category: Category(name: "test", color: .gray))))
-    }
-}
+//struct MemoCell_Previews: PreviewProvider {
+//    static var previews: some View {
+//        MemoCell(memo: Memo(emoji: "⭐", content: "test", person: Person(name: "test")))
+//    }
+//}

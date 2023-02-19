@@ -18,6 +18,6 @@ struct DetailMemoView: View {
 
 struct DetailMemoView_Previews: PreviewProvider {
     static var previews: some View {
-        DetailMemoView(memo: Memo(emoji: "⭐", content: "test", person: Person(name: "test", category: Category(name: "test", color: .gray))))
+        DetailMemoView(memo: Memo(emoji: "⭐", content: "test", person: Person(name: "test")))
     }
 }

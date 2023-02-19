@@ -16,14 +16,14 @@ class Person: Identifiable, ObservableObject {
     var name: String
     var image: UIImage
     var favorite: Bool
-    var category: Category
+//    var category: Category
     
     //생성자
-    init(name: String, image: UIImage = UIImage(imageLiteralResourceName: "profile"), favorite: Bool = false, category: Category) {
+    init(name: String, image: UIImage = UIImage(imageLiteralResourceName: "profile"), favorite: Bool = false) {
         id = UUID()
         self.name = name
         self.image = image
         self.favorite = favorite
-        self.category = category
+//        self.category = category
     }
 }
