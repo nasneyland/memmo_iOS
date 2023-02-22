@@ -9,7 +9,7 @@ import SwiftUI
 
 struct MemoCell: View {
     
-    @ObservedObject var memo: Memo
+//    @ObservedObject var memo: Memo
     
     var body: some View {
         HStack(alignment: .center) {
@@ -17,7 +17,7 @@ struct MemoCell: View {
             
             VStack(alignment: .leading) {
                 HStack(alignment: .center) {
-                    Text(memo.person.name)
+                    Text("name")
                         .font(.body)
                         .lineLimit(1)
                     Text("catogory")
@@ -27,7 +27,7 @@ struct MemoCell: View {
                         .font(.caption)
                         .lineLimit(1)
                 }
-                Text(memo.content)
+                Text("content")
                     .font(.caption)
                     .foregroundColor(.secondary)
                     .lineLimit(2)

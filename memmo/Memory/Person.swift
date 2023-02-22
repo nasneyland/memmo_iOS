@@ -6,24 +6,17 @@
 //
 
 import Foundation
-import SwiftUI
+import RealmSwift
 
-class Person: Identifiable, ObservableObject {
+class Person: Object, Identifiable {
     
-    //Identifiable 필수 속성
-    let id: UUID
+    @Persisted(primaryKey: true) var id: ObjectId
+    @Persisted var name: String
+    @Persisted var image: String
     
-    var name: String
-    var image: UIImage
-    var favorite: Bool
-//    var category: Category
+    @Persisted(originProperty: "persons") var category: LinkingObjects<Category>
     
-    //생성자
-    init(name: String, image: UIImage = UIImage(imageLiteralResourceName: "profile"), favorite: Bool = false) {
-        id = UUID()
-        self.name = name
-        self.image = image
-        self.favorite = favorite
-//        self.category = category
+    override class func primaryKey() -> String? {
+        "id"
     }
 }

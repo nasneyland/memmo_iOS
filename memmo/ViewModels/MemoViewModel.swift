@@ -15,23 +15,39 @@ class MemoViewModel: ObservableObject {
     @Published var categoryList: [Category] = []
     
     init() {
+        setCategory()
+    }
+    
+    private func setCategory() {
         categoryList = Array(categoryDatas)
     }
     
-    func addCategory(name: String) {
+    func addCategory(name: String, color: String = "gray") {
         let category = Category()
         category.name = name
+        category.color = color
         $categoryDatas.append(category)
-        self.categoryList.append(category)
+        setCategory()
+    }
+    
+    func updateCategory(id: ObjectId, name: String, color: String = "gray") {
+        do {
+            let realm = try Realm()
+            guard let category = realm.object(ofType: Category.self, forPrimaryKey: id) else { return }
+            try realm.write {
+                category.name = name
+                category.color = color
+            }
+        }
+        catch {
+            print(error)
+        }
+        setCategory()
+    }
+    
+    func deleteCategory(index: Int) {
+        $categoryDatas.remove(atOffsets: [index])
+        setCategory()
     }
 }
-
-//MARK: - 데모 데이터
-
-// 메모 데이터
-let DemoMemos = [
-    Memo(emoji: "🥤", content: "흑당버블티", person: Person(name: "김영희")),
-    Memo(emoji: "👔", content: "100사이즈", person: Person(name: "김철수")),
-    Memo(emoji: "🥤", content: "아이스바닐라라떼", person: Person(name: "엄마"))
-]
 

@@ -11,6 +11,9 @@ import SwiftUI
 struct memmoApp: App {
     let persistenceController = PersistenceController.shared
     
+    // Realm DB 마이그레이션 (변경된 사항 마이그레이션 체크)
+    let migrator = Migrator()
+    
     // 모든 뷰에서 사용하는 공통 데이터 선언
     @StateObject var viewModel = MemoViewModel()
     

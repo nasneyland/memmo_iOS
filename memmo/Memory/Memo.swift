@@ -6,22 +6,17 @@
 //
 
 import Foundation
+import RealmSwift
 import SwiftUI
 
-class Memo: Identifiable, ObservableObject {
-    
-    //Identifiable 필수 속성
-    let id: UUID
-    
-    var emoji: String
-    var content: String
-    var person: Person
-    
-    //생성자
-    init(emoji: String, content: String, person: Person) {
-        id = UUID()
-        self.emoji = emoji
-        self.content = content
-        self.person = person
+class Memo: Object, Identifiable {
+
+    @Persisted(primaryKey: true) var id: ObjectId
+    @Persisted var emoji: String
+    @Persisted var content: String
+    @Persisted var person: Person?
+
+    override class func primaryKey() -> String? {
+        "id"
     }
 }

@@ -7,12 +7,14 @@
 
 import Foundation
 import RealmSwift
-import SwiftUI
 
 class Category: Object, Identifiable {
     
     @Persisted(primaryKey: true) var id: ObjectId
     @Persisted var name: String
+    @Persisted var color: String
+    
+    @Persisted var persons = RealmSwift.List<Person>()
     
     override class func primaryKey() -> String? {
         "id"
