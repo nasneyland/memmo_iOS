@@ -11,12 +11,17 @@ import RealmSwift
 class MemoViewModel: ObservableObject {
     
     @ObservedResults(Category.self) var categoryDatas
+    @ObservedResults(Person.self) var personDatas
     
     @Published var categoryList: [Category] = []
+    @Published var personList: [Person] = []
     
     init() {
         setCategory()
+        setPerson()
     }
+    
+    //MARK: - 카테고리
     
     private func setCategory() {
         categoryList = Array(categoryDatas)
@@ -48,6 +53,20 @@ class MemoViewModel: ObservableObject {
     func deleteCategory(index: Int) {
         $categoryDatas.remove(atOffsets: [index])
         setCategory()
+    }
+    
+    //MARK: - 사람
+    
+    private func setPerson() {
+        personList = Array(personDatas)
+    }
+    
+    func addPerson(name: String, image: String, category: Category) {
+        let person = Person()
+        person.name = name
+        person.image = image
+        $personDatas.append(person)
+        setPerson()
     }
 }
 

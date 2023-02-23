@@ -11,11 +11,13 @@ struct MemoListView: View {
     
     @EnvironmentObject var viewModel: MemoViewModel
     
-    @State private var typeSelection = 0
-    @State private var listSelction = 0
+    @State private var typeSelection = 1
     
     @State private var showCategoryComposer: Bool = false
     @State private var selectedCategory: Category? = nil
+    
+    @State private var showPersonComposer: Bool = false
+    @State private var selectedPerson: Person? = nil
     
     let viewOptions: [String] = ["그룹", "사람", "메모"]
     let columns = [GridItem(.flexible()),GridItem(.flexible()),GridItem(.flexible())]
@@ -39,9 +41,9 @@ struct MemoListView: View {
                 
                 switch typeSelection {
                 case 0:
-                    // 카테고리 보기
+                    // 그룹 보기
                     if viewModel.categoryList.isEmpty {
-                        Text("카테고리를 생성해주세요.")
+                        Text("새 그룹을 생성해주세요.")
                             .foregroundColor(.gray)
                     } else {
                         ScrollView {
@@ -76,40 +78,70 @@ struct MemoListView: View {
                         .padding(EdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20))
                     }
                 case 1:
-                    Text("프로필보기")
+                    // 사람 보기
+                    if viewModel.personList.isEmpty {
+                        Text("새 멤버를 생성해주세요.")
+                            .foregroundColor(.gray)
+                    } else {
+                        ScrollView {
+                            LazyVGrid(columns: columns) {
+                                ForEach(Array(zip(viewModel.personList.indices, viewModel.personList)), id: \.0) { (i,person) in
+                                    VStack {
+                                        MemoCell()
+                                    }
+                                    .onTapGesture {
+                                        print(person.name)
+                                    }
+                                }
+                            }
+                        }
+                        .padding(EdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20))
+                    }
                 case 2:
                     Text("리스트보기")
-//                    List {
-//                        ForEach(viewModel.list) { memo in
-//                            NavigationLink {
-//                                DetailMemoView(memo: memo)
-//                            } label: {
-//                                MemoCell(memo: memo)
-//                            }
-//                        }
-//
-//                    }
-//                    .listStyle(.plain)
                 default:
                     Text("리스트가 존재하지 않습니다.")
                 }
-                
                 Spacer()
             }
             
-            // 네비게이션 바 설정
+            // 네비게이션 타이틀 설정
             .navigationTitle("Memmo")
+            
+            // 네비게이션 버튼 설정
             .toolbar {
-                Button {
-                    selectedCategory = nil
-                    showCategoryComposer = true
-                } label: {
-                    Image(systemName: "plus")
+                ToolbarItem(placement: .primaryAction) {
+                    Menu {
+                        Button(action: {
+                            selectedCategory = nil
+                            showCategoryComposer = true
+                        }) {
+                            HStack {
+                                Text("새 그룹 추가하기")
+                                Image(systemName: "folder.circle")
+                            }
+                        }
+                        Button(action: {
+                            selectedPerson = nil
+                            showPersonComposer = true
+                        }) {
+                            HStack {
+                                Text("새 멤버 추가하기")
+                                Image(systemName: "person.circle")
+                            }
+                        }
+                    } label: {
+                        Image(systemName: "plus")
+                    }
+
                 }
             }
             .foregroundColor(.black)
             .sheet(isPresented: $showCategoryComposer) {
                 ComposeCategoryView(category: selectedCategory)
+            }
+            .sheet(isPresented: $showPersonComposer) {
+                ComposePersonView(person: selectedPerson)
             }
         }
     }

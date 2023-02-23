@@ -9,8 +9,6 @@ import SwiftUI
 
 struct MemoCell: View {
     
-//    @ObservedObject var memo: Memo
-    
     var body: some View {
         HStack(alignment: .center) {
             ProfileImage()

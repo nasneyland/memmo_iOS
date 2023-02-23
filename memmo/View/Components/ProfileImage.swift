@@ -8,11 +8,20 @@
 import SwiftUI
 
 struct ProfileImage: View {
+    
+    var width: CGFloat!
+    var height: CGFloat!
+    
+    init(width: CGFloat = 50, height: CGFloat = 50) {
+        self.width = width
+        self.height = height
+    }
+    
     var body: some View {
         Image("profile")
             .resizable()
             .scaledToFill()
-            .frame(width:50, height: 50)
+            .frame(width:width, height: height)
             .clipShape(Circle())
     }
 }
