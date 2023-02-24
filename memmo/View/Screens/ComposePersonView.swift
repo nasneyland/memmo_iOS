@@ -53,7 +53,7 @@ struct ComposePersonView: View {
                     Picker("", selection: $categorySelection) {
                         ForEach(Array(zip(viewModel.categoryList.indices, viewModel.categoryList)), id: \.0) { (i,category) in
                             Text(category.name)
-                                .tag(i)
+                                .tag(category.id)
                         }
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -64,9 +64,9 @@ struct ComposePersonView: View {
                     Button {
                         if !name.isEmpty {
                             if let person = person {
-                                //                                viewModel.addPerson(name: <#T##String#>, image: <#T##String#>, category: <#T##Category#>)
+                                viewModel.addPerson(name: name, image: "", category: viewModel.categoryList[categorySelection].id)
                             } else {
-                                //                                viewModel.addPerson(name: <#T##String#>, image: <#T##String#>, category: <#T##Category#>)
+                                viewModel.addPerson(name: name, image: "", category: viewModel.categoryList[categorySelection].id)
                             }
                             dismiss()
                         }

@@ -11,7 +11,6 @@ import RealmSwift
 class MemoViewModel: ObservableObject {
     
     @ObservedResults(Category.self) var categoryDatas
-    @ObservedResults(Person.self) var personDatas
     
     @Published var categoryList: [Category] = []
     @Published var personList: [Person] = []
@@ -50,23 +49,39 @@ class MemoViewModel: ObservableObject {
         setCategory()
     }
     
+    func updateCategory(id: ObjectId, person: Person) {
+        do {
+            let realm = try Realm()
+            guard let category = realm.object(ofType: Category.self, forPrimaryKey: id) else { return }
+            try realm.write {
+                category.persons.append(person)
+            }
+        }
+        catch {
+            print(error)
+        }
+        setPerson()
+        setCategory()
+    }
+    
     func deleteCategory(index: Int) {
         $categoryDatas.remove(atOffsets: [index])
+        setPerson()
         setCategory()
     }
     
     //MARK: - 사람
     
     private func setPerson() {
-        personList = Array(personDatas)
+        personList = []
+        categoryList.forEach { personList += $0.persons }
     }
     
-    func addPerson(name: String, image: String, category: Category) {
+    func addPerson(name: String, image: String, category: ObjectId) {
         let person = Person()
         person.name = name
         person.image = image
-        $personDatas.append(person)
-        setPerson()
+        updateCategory(id: category, person: person)
     }
 }
 

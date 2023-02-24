@@ -34,8 +34,8 @@ struct MemoCell: View {
     }
 }
 
-//struct MemoCell_Previews: PreviewProvider {
-//    static var previews: some View {
-//        MemoCell(memo: Memo(emoji: "⭐", content: "test", person: Person(name: "test")))
-//    }
-//}
+struct MemoCell_Previews: PreviewProvider {
+    static var previews: some View {
+        MemoCell()
+    }
+}

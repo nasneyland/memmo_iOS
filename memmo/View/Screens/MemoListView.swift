@@ -49,29 +49,23 @@ struct MemoListView: View {
                         ScrollView {
                             LazyVGrid(columns: columns) {
                                 ForEach(Array(zip(viewModel.categoryList.indices, viewModel.categoryList)), id: \.0) { (i,category) in
-                                    VStack {
-                                        Image("folder_\(category.color.isEmpty ? "gray" : category.color)")
-                                            .resizable()
-                                            .frame(width: 80, height: 70)
-                                            .scaledToFit()
-                                        Text(category.name)
-                                    }
-                                    .onTapGesture {
-                                        print(category.name)
-                                    }
-                                    .contextMenu {
-                                        Button() {
-                                            selectedCategory = category
-                                            showCategoryComposer = true
-                                        } label: {
-                                            Label("수정하기", systemImage: "pencil.circle")
+                                    CategoryCell(category: category)
+                                        .onTapGesture {
+                                            print(category.name)
                                         }
-                                        Button(role: .destructive) {
-                                            viewModel.deleteCategory(index: i)
-                                        } label: {
-                                            Label("삭제하기", systemImage: "trash.circle")
+                                        .contextMenu {
+                                            Button() {
+                                                selectedCategory = category
+                                                showCategoryComposer = true
+                                            } label: {
+                                                Label("수정하기", systemImage: "pencil.circle")
+                                            }
+                                            Button(role: .destructive) {
+                                                viewModel.deleteCategory(index: i)
+                                            } label: {
+                                                Label("삭제하기", systemImage: "trash.circle")
+                                            }
                                         }
-                                    }
                                 }
                             }
                         }
@@ -85,12 +79,9 @@ struct MemoListView: View {
                     } else {
                         ScrollView {
                             LazyVGrid(columns: columns) {
-                                ForEach(Array(zip(viewModel.personList.indices, viewModel.personList)), id: \.0) { (i,person) in
-                                    VStack {
-                                        MemoCell()
-                                    }
-                                    .onTapGesture {
-                                        print(person.name)
+                                ForEach(viewModel.categoryList) { category in
+                                    ForEach(category.persons) { person in
+                                        PersonCell(category: category, person: person)
                                     }
                                 }
                             }

@@ -7,7 +7,6 @@
 
 import Foundation
 import RealmSwift
-import SwiftUI
 
 class Memo: Object, Identifiable {
 

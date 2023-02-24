@@ -14,7 +14,7 @@ class Person: Object, Identifiable {
     @Persisted var name: String
     @Persisted var image: String
     
-    @Persisted(originProperty: "persons") var category: LinkingObjects<Category>
+    @Persisted var category = LinkingObjects(fromType: Category.self, property: "persons")
     
     override class func primaryKey() -> String? {
         "id"
