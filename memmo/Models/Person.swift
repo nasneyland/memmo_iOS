@@ -12,7 +12,6 @@ class Person: Object, Identifiable {
     
     @Persisted(primaryKey: true) var id: ObjectId
     @Persisted var name: String
-    @Persisted var image: String
     
     @Persisted var category = LinkingObjects(fromType: Category.self, property: "persons")
     

@@ -6,16 +6,20 @@
 //
 
 import SwiftUI
+import PhotosUI
 
 struct ComposePersonView: View {
     
     @EnvironmentObject var viewModel: MemoViewModel
     @Environment(\.dismiss) private var dismiss
     
-    @State private var categorySelection = 0
+    @State private var selectedItem: PhotosPickerItem? = nil
+    @State private var selectedImageData: Data? = nil
     
     @State private var name: String = ""
     @State private var category: String = ""
+//    @State private var image: String = ""
+    @State private var categorySelection = 0
     
     var person: Person?
     
@@ -35,7 +39,25 @@ struct ComposePersonView: View {
                 
                 // 본문
                 VStack {
-                    ProfileImage(width: 100, height: 100)
+                    PhotosPicker(
+                        selection: $selectedItem,
+                        matching: .images,
+                        photoLibrary: .shared()) {
+                            if let data = selectedImageData {
+                                ProfileImage(width: 100, height: 100, image: UIImage(data: data)!)
+                            } else {
+                                ProfileImage(width: 100, height: 100)
+                            }
+                            
+                        }
+                        .onChange(of: selectedItem) { newItem in
+                            Task {
+                                if let data = try? await newItem?.loadTransferable(type: Data.self) {
+                                    selectedImageData = data
+                                }
+                            }
+                        }
+                    
                     HStack {
                         Text("이름")
                             .bold()
@@ -64,9 +86,9 @@ struct ComposePersonView: View {
                     Button {
                         if !name.isEmpty {
                             if let person = person {
-                                viewModel.addPerson(name: name, image: "", category: viewModel.categoryList[categorySelection].id)
+                                
                             } else {
-                                viewModel.addPerson(name: name, image: "", category: viewModel.categoryList[categorySelection].id)
+                                viewModel.addPerson(name: name, imageData: selectedImageData, category: viewModel.categoryList[categorySelection].id)
                             }
                             dismiss()
                         }

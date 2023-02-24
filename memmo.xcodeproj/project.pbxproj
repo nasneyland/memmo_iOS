@@ -25,6 +25,7 @@
 		FD4256E029A637D900787AE9 /* FormButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD4256DF29A637D900787AE9 /* FormButton.swift */; };
 		FD4256E529A77E4000787AE9 /* CategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD4256E429A77E4000787AE9 /* CategoryCell.swift */; };
 		FD4256E729A7802D00787AE9 /* PersonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD4256E629A7802D00787AE9 /* PersonCell.swift */; };
+		FD4256EB29A8C61B00787AE9 /* RealmImageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD4256EA29A8C61B00787AE9 /* RealmImageManager.swift */; };
 		FD44D2242998FA1E00E8D0DD /* memmoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD44D2232998FA1E00E8D0DD /* memmoApp.swift */; };
 		FD44D2282998FA1F00E8D0DD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FD44D2272998FA1F00E8D0DD /* Assets.xcassets */; };
 		FD44D22B2998FA1F00E8D0DD /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FD44D22A2998FA1F00E8D0DD /* Preview Assets.xcassets */; };
@@ -69,6 +70,7 @@
 		FD4256DF29A637D900787AE9 /* FormButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormButton.swift; sourceTree = "<group>"; };
 		FD4256E429A77E4000787AE9 /* CategoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCell.swift; sourceTree = "<group>"; };
 		FD4256E629A7802D00787AE9 /* PersonCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonCell.swift; sourceTree = "<group>"; };
+		FD4256EA29A8C61B00787AE9 /* RealmImageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmImageManager.swift; sourceTree = "<group>"; };
 		FD44D2202998FA1E00E8D0DD /* memmo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = memmo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FD44D2232998FA1E00E8D0DD /* memmoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = memmoApp.swift; sourceTree = "<group>"; };
 		FD44D2272998FA1F00E8D0DD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -109,7 +111,7 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		FD4256902999039700787AE9 /* View */ = {
+		FD4256902999039700787AE9 /* Views */ = {
 			isa = PBXGroup;
 			children = (
 				FD44D2232998FA1E00E8D0DD /* memmoApp.swift */,
@@ -117,7 +119,7 @@
 				FD4256E329A77E2100787AE9 /* SubViews */,
 				FD42569A29991D7E00787AE9 /* Components */,
 			);
-			path = View;
+			path = Views;
 			sourceTree = "<group>";
 		};
 		FD42569A29991D7E00787AE9 /* Components */ = {
@@ -131,14 +133,14 @@
 			path = Components;
 			sourceTree = "<group>";
 		};
-		FD42569D29992B2C00787AE9 /* Memory */ = {
+		FD42569D29992B2C00787AE9 /* Models */ = {
 			isa = PBXGroup;
 			children = (
 				FD42569E29992B3D00787AE9 /* Category.swift */,
 				FD4256A029992C1400787AE9 /* Person.swift */,
 				FD4256A229992C8700787AE9 /* Memo.swift */,
 			);
-			path = Memory;
+			path = Models;
 			sourceTree = "<group>";
 		};
 		FD4256A8299CB5E800787AE9 /* Screens */ = {
@@ -188,6 +190,7 @@
 			isa = PBXGroup;
 			children = (
 				FD4256D729A2371200787AE9 /* Migrator.swift */,
+				FD4256EA29A8C61B00787AE9 /* RealmImageManager.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -230,9 +233,9 @@
 				FD44D2292998FA1F00E8D0DD /* Preview Content */,
 				FD4256CC29A1C95F00787AE9 /* Resources */,
 				FD4256AA299CB68000787AE9 /* Extensions */,
-				FD42569D29992B2C00787AE9 /* Memory */,
+				FD42569D29992B2C00787AE9 /* Models */,
 				FD4256C329A131C500787AE9 /* ViewModels */,
-				FD4256902999039700787AE9 /* View */,
+				FD4256902999039700787AE9 /* Views */,
 			);
 			path = memmo;
 			sourceTree = "<group>";
@@ -412,6 +415,7 @@
 				FD4256A329992C8700787AE9 /* Memo.swift in Sources */,
 				FD42569F29992B3D00787AE9 /* Category.swift in Sources */,
 				FD4256DA29A6274400787AE9 /* ComposePersonView.swift in Sources */,
+				FD4256EB29A8C61B00787AE9 /* RealmImageManager.swift in Sources */,
 				FD425692299903A400787AE9 /* MemoListView.swift in Sources */,
 				FD4256DE29A6336800787AE9 /* FormTextField.swift in Sources */,
 				FD4256D529A20A9200787AE9 /* ColorButton.swift in Sources */,
@@ -505,7 +509,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -560,7 +564,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;

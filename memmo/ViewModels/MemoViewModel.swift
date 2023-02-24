@@ -7,6 +7,7 @@
 
 import SwiftUI
 import RealmSwift
+import UIKit
 
 class MemoViewModel: ObservableObject {
     
@@ -49,12 +50,13 @@ class MemoViewModel: ObservableObject {
         setCategory()
     }
     
-    func updateCategory(id: ObjectId, person: Person) {
+    func updateCategory(id: ObjectId, person: Person, image: UIImage?) {
         do {
             let realm = try Realm()
             guard let category = realm.object(ofType: Category.self, forPrimaryKey: id) else { return }
             try realm.write {
                 category.persons.append(person)
+                saveImageToDocumentDirectory(imageName: "\(person.id).png", image: image)
             }
         }
         catch {
@@ -77,11 +79,13 @@ class MemoViewModel: ObservableObject {
         categoryList.forEach { personList += $0.persons }
     }
     
-    func addPerson(name: String, image: String, category: ObjectId) {
+    func addPerson(name: String, imageData: Data?, category: ObjectId) {
         let person = Person()
         person.name = name
-        person.image = image
-        updateCategory(id: category, person: person)
+        if let data = imageData {
+            updateCategory(id: category, person: person, image: UIImage(data: data))
+        } else {
+            updateCategory(id: category, person: person, image: nil)
+        }
     }
 }
-

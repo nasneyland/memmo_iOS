@@ -15,7 +15,7 @@ struct PersonCell: View {
     
     var body: some View {
         VStack {
-            ProfileImage()
+            ProfileImage(image: loadImageFromDocumentDirectory(imageName: person.id.stringValue))
             Text(person.name)
             Text(category.name)
         }
