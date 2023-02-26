@@ -12,13 +12,17 @@ import UIKit
 class MemoViewModel: ObservableObject {
     
     @ObservedResults(Category.self) var categoryDatas
+    @ObservedResults(Person.self) var personDatas
     
     @Published var categoryList: [Category] = []
     @Published var personList: [Person] = []
+    @Published var memoDict: [String: String] = [:]
+    @Published var memoList: [String: Person] = [:]
     
     init() {
         setCategory()
         setPerson()
+        setMemo()
     }
     
     //MARK: - 카테고리
@@ -62,13 +66,21 @@ class MemoViewModel: ObservableObject {
         catch {
             print(error)
         }
-        setPerson()
         setCategory()
+        setPerson()
     }
     
-    func deleteCategory(index: Int) {
-        $categoryDatas.remove(atOffsets: [index])
-        setPerson()
+    func deleteCategory(id: ObjectId) {
+        do {
+            let realm = try Realm()
+            guard let category = realm.object(ofType: Category.self, forPrimaryKey: id) else { return }
+            try! realm.write{
+                realm.delete(category)
+            }
+        }
+        catch {
+            print(error)
+        }
         setCategory()
     }
     
@@ -79,13 +91,61 @@ class MemoViewModel: ObservableObject {
         categoryList.forEach { personList += $0.persons }
     }
     
-    func addPerson(name: String, imageData: Data?, category: ObjectId) {
+    func addPerson(name: String, imageData: Data?, categoryId: ObjectId) {
         let person = Person()
         person.name = name
         if let data = imageData {
-            updateCategory(id: category, person: person, image: UIImage(data: data))
+            updateCategory(id: categoryId, person: person, image: UIImage(data: data))
         } else {
-            updateCategory(id: category, person: person, image: nil)
+            updateCategory(id: categoryId, person: person, image: nil)
         }
     }
+    
+//    func updatePerson(id: ObjectId, memo: Memo) {
+//        do {
+//            let realm = try Realm()
+//            guard let person = realm.object(ofType: Person.self, forPrimaryKey: id) else { return }
+//            try realm.write {
+//                person.memos.append(memo)
+//            }
+//        }
+//        catch {
+//            print(error)
+//        }
+//    }
+    
+    func deletePerson(id: ObjectId) {
+        do {
+            let realm = try Realm()
+            guard let person = realm.object(ofType: Person.self, forPrimaryKey: id) else { return }
+            try! realm.write{
+                realm.delete(person)
+            }
+        }
+        catch {
+            print(error)
+        }
+        setPerson()
+        setCategory()
+    }
+    
+    //MARK: - 메모
+    
+    private func setMemo() {
+        var persons: [String: Person] = [:]
+        personList.forEach { person in
+            person.memos.forEach { memo in
+                memoDict[memo.emoji] = memo.title
+            }
+        }
+        print(memoDict)
+    }
+
+//    func addMemo(emoji: String, title: String, content: String, person: ObjectId) {
+//        let memo = Memo()
+//        memo.emoji = emoji
+//        memo.title = title
+//        memo.content = content
+//        updatePerson(id: person, memo: memo)
+//    }
 }

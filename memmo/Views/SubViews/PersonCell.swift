@@ -10,20 +10,32 @@ import RealmSwift
 
 struct PersonCell: View {
     
-    @ObservedObject var category: Category
-    @ObservedObject var person: Person
+    var category: Category
+    var person: Person
     
     var body: some View {
-        VStack {
+        HStack() {
             ProfileImage(image: loadImageFromDocumentDirectory(imageName: person.id.stringValue))
-            Text(person.name)
-            Text(category.name)
+                .padding(EdgeInsets(top: 10, leading: 0, bottom: 0, trailing: 0))
+            
+            VStack(alignment: .leading) {
+                HStack(alignment: .center) {
+                    Text(person.name)
+                        .font(.body)
+                    Text(category.name)
+                        .font(.system(size: 10))
+                        .fontWeight(.medium)
+                        .padding(EdgeInsets(top: 2, leading: 6, bottom: 2, trailing: 6))
+                        .background(Color("light_\(category.color)"))
+                        .cornerRadius(8)
+                    Spacer()
+                }
+                Text("메모 수 0개")
+                    .font(.caption)
+                    .foregroundColor(.gray)
+            }
+            Text("🧃👕🐶")
+                .font(.system(size: 15))
         }
-    }
-}
-
-struct PersonCell_Previews: PreviewProvider {
-    static var previews: some View {
-        PersonCell(category: Category(), person: Person())
     }
 }

@@ -9,13 +9,11 @@ import SwiftUI
 
 struct ProfileImage: View {
     
-    var width: CGFloat!
-    var height: CGFloat!
+    var size: CGFloat?
     var image: UIImage?
     
-    init(width: CGFloat = 50, height: CGFloat = 50, image: UIImage = UIImage(named: "profile")!) {
-        self.width = width
-        self.height = height
+    init(size: CGFloat = 50, image: UIImage = UIImage(named: "profile")!) {
+        self.size = size
         self.image = image
     }
     
@@ -25,13 +23,13 @@ struct ProfileImage: View {
             Image(uiImage: image)
                 .resizable()
                 .scaledToFill()
-                .frame(width:width, height: height)
+                .frame(width:size, height: size)
                 .clipShape(Circle())
         } else {
             Image("profile")
                 .resizable()
                 .scaledToFill()
-                .frame(width:width, height: height)
+                .frame(width:size, height: size)
                 .clipShape(Circle())
         }
     }

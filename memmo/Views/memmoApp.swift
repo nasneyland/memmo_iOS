@@ -19,6 +19,7 @@ struct memmoApp: App {
     
     // 실행 초기 호출 코드
     init() {
+        // 저장 경로 확인
         let _ = UserDefaults.standard.set(false, forKey: "_UIConstraintBasedLayoutLogUnsatisfiable")
         print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!.path)
     }
@@ -28,8 +29,6 @@ struct memmoApp: App {
             MemoListView()
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
                 .environmentObject(viewModel) // 이어지는 뷰에서도 동일하게 사용 가능!
-//            ComposePersonView()
-//                .environmentObject(viewModel) // 이어지는 뷰에서도 동일하게 사용 가능!
         }
     }
 }

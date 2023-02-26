@@ -13,21 +13,19 @@ struct ComposePersonView: View {
     @EnvironmentObject var viewModel: MemoViewModel
     @Environment(\.dismiss) private var dismiss
     
+    @Binding var category: Category?
+    @Binding var person: Person?
+    
     @State private var selectedItem: PhotosPickerItem? = nil
     @State private var selectedImageData: Data? = nil
     
-    @State private var name: String = ""
-    @State private var category: String = ""
-//    @State private var image: String = ""
-    @State private var categorySelection = 0
-    
-    var person: Person?
+    @State private var personName: String = ""
     
     var body: some View {
         NavigationView {
-            VStack(spacing: 10) {
+            VStack() {
                 // 네비게이션
-                Text(person == nil ? "새 사람 생성" : "사람 편집")
+                Text(person == nil ? "새 멤버 생성" : "멤버 편집")
                     .font(Font.headline.weight(.heavy))
                     .navigationBarTitle(Text(""))
                     .navigationBarItems(trailing: Button(action: {
@@ -44,11 +42,10 @@ struct ComposePersonView: View {
                         matching: .images,
                         photoLibrary: .shared()) {
                             if let data = selectedImageData {
-                                ProfileImage(width: 100, height: 100, image: UIImage(data: data)!)
+                                ProfileImage(size: 100, image: UIImage(data: data)!)
                             } else {
-                                ProfileImage(width: 100, height: 100)
+                                ProfileImage(size: 100)
                             }
-                            
                         }
                         .onChange(of: selectedItem) { newItem in
                             Task {
@@ -58,65 +55,66 @@ struct ComposePersonView: View {
                             }
                         }
                     
-                    HStack {
-                        Text("이름")
+                    Form {
+                        Section(header: Text("이름")
                             .bold()
-                            .font(.system(size: 15))
-                        Spacer()
-                    }
-                    TextField("멤버 이름을 입력해주세요.", text: $name)
-                        .textFieldStyle(FormTextField())
-                    HStack {
-                        Text("그룹")
-                            .bold()
-                            .font(.system(size: 15))
-                        Spacer()
-                    }
-                    Picker("", selection: $categorySelection) {
-                        ForEach(Array(zip(viewModel.categoryList.indices, viewModel.categoryList)), id: \.0) { (i,category) in
-                            Text(category.name)
-                                .tag(category.id)
+                            .foregroundColor(Color.black)
+                        ){
+                            TextField("멤버 이름을 입력해주세요.", text: $personName)
                         }
-                    }
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(5)
-                    .background(.white)
-                    .cornerRadius(10)
-                    
-                    Button {
-                        if !name.isEmpty {
-                            if let person = person {
-                                
+                        Section(header: Text("그룹")
+                            .bold()
+                            .foregroundColor(Color.black)
+                        ){
+                            if let category = category {
+                                HStack() {
+                                    Image("folder_\(category.color)")
+                                        .resizable()
+                                        .scaledToFit()
+                                        .frame(height: 20)
+                                    Text(category.name)
+                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                }
+//                                .padding(10)
+//                                .background(.white)
+//                                .cornerRadius(10)
                             } else {
-                                viewModel.addPerson(name: name, imageData: selectedImageData, category: viewModel.categoryList[categorySelection].id)
+        //                        Picker("", selection: $categorySelection) {
+        //                            ForEach(Array(zip(viewModel.categoryList.indices, viewModel.categoryList)), id: \.0) { (i,category) in
+        //                                Text(category.name)
+        //                                    .tag(category.id)
+        //                            }
+        //                        }
                             }
-                            dismiss()
                         }
-                    } label: {
-                        HStack {
-                            Spacer()
-                            Text(person == nil ? "생성하기" : "수정하기")
-                                .foregroundColor(name.isEmpty ? .light_gray : .black)
-                            Spacer()
+                        Button {
+                            if category != nil && !personName.isEmpty {
+                                if let person = person {
+                                    viewModel.addPerson(name: personName, imageData: selectedImageData, categoryId: category!.id)
+                                } else {
+                                    viewModel.addPerson(name: personName, imageData: selectedImageData, categoryId: category!.id)
+                                }
+                                dismiss()
+                            }
+                        } label: {
+                            HStack {
+                                Spacer()
+                                Text(person == nil ? "생성하기" : "수정하기")
+                                    .foregroundColor(category == nil || personName.isEmpty ? .light_gray : .black)
+                                Spacer()
+                            }
                         }
                     }
-                        .buttonStyle(FormButton())
-                    
-                    Spacer()
+                    .scrollContentBackground(.hidden)
                 }
-                    .padding(EdgeInsets(top: 30, leading: 20, bottom: 10, trailing: 20))
-                    .background(Color.system_gray)
-            }
-        }.onAppear() { // 받아온 변수 초기화
-            if let person = person {
-                name = person.name
+                .padding(EdgeInsets(top: 20, leading: 0, bottom: 0, trailing: 0))
+                .background(Color.system_gray)
             }
         }
-    }
-}
-
-struct ComposePersonView_Previews: PreviewProvider {
-    static var previews: some View {
-        ComposePersonView()
+        .onAppear() {
+            if let person = person {
+                personName = person.name
+            }
+        }
     }
 }

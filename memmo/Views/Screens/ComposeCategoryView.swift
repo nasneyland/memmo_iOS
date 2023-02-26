@@ -12,18 +12,19 @@ struct ComposeCategoryView: View {
     @EnvironmentObject var viewModel: MemoViewModel
     @Environment(\.dismiss) private var dismiss
     
+    @Binding var category: Category?
+    
     @State private var name: String = ""
     @State private var color: String = ""
-    
-    var category: Category?
     
     let colorSet: [String] = ["red", "orange", "yellow", "green", "blue", "purple"]
     
     var body: some View {
         NavigationView {
             VStack {
+                // 네비게이션
                 Text(category == nil ? "새 그룹 생성" : "그룹 편집")
-                    .font(Font.headline.weight(.heavy))
+                    .font(.headline)
                     .navigationBarTitle(Text(""))
                     .navigationBarItems(trailing: Button(action: {
                         dismiss()
@@ -76,18 +77,16 @@ struct ComposeCategoryView: View {
                         }
                     }
                 }
+                .scrollContentBackground(.hidden)
+                .background(Color.system_gray)
             }
-        }.onAppear() { // 받아온 변수 초기화
+        }
+        .onAppear() {
+            // 받아온 변수 초기화
             if let category = category {
                 color = category.color
                 name = category.name
             }
         }
-    }
-}
-
-struct ComposeCategoryView_Previews: PreviewProvider {
-    static var previews: some View {
-        ComposeCategoryView()
     }
 }
