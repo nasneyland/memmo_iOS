@@ -11,11 +11,13 @@ struct CategoryCell: View {
     
     var category: Category
     
-    @Binding var showMemoDetail: Bool
     @Binding var showPersonComposer: Bool
-    
     @Binding var selectedPerson: Person?
     @Binding var selectedPersonCategory: Category?
+    
+    @Binding var showMemoDetail: Bool
+    @Binding var selectedMemoPerson: Person?
+    @Binding var selectedMemoCategory: Category?
     
     @State private var isOpened: Bool = false
     
@@ -64,8 +66,8 @@ struct CategoryCell: View {
                     PersonCell(category: category, person: person)
                         .padding(EdgeInsets(top: 0, leading: 30, bottom: 0, trailing: 0))
                         .onTapGesture {
-                            selectedPersonCategory = category
-                            selectedPerson = person
+                            selectedMemoCategory = category
+                            selectedMemoPerson = person
                             showMemoDetail = true
                         }
                 }

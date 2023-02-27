@@ -47,7 +47,6 @@ struct ComposeCategoryView: View {
                     ){
                         HStack {
                             Spacer()
-                            
                             ForEach(colorSet, id: \.self) { c in
                                 Button("") {
                                     self.color = c

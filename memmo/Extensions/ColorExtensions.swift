@@ -40,5 +40,5 @@ extension Color {
     static let light_gray = Color(hex: "C9C9C9")
     static let dark_gray = Color(hex: "A1A1A1")
     
-    static let system_gray = Color(hex: "F8FAFA")
+    static let system_gray = Color(hex: "F3F4FA")
 }

@@ -11,12 +11,11 @@ import RealmSwift
 class Memo: Object, Identifiable {
 
     @Persisted(primaryKey: true) var id: ObjectId
-    @Persisted var emoji: String
-    @Persisted var title: String
+    @Persisted var type: MemoType?
     @Persisted var content: String
     
     @Persisted var person = LinkingObjects(fromType: Person.self, property: "memos")
-
+    
     override class func primaryKey() -> String? {
         "id"
     }

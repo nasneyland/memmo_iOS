@@ -13,16 +13,14 @@ class MemoViewModel: ObservableObject {
     
     @ObservedResults(Category.self) var categoryDatas
     @ObservedResults(Person.self) var personDatas
+    @ObservedResults(Memo.self) var memoDatas
     
     @Published var categoryList: [Category] = []
     @Published var personList: [Person] = []
-    @Published var memoDict: [String: String] = [:]
-    @Published var memoList: [String: Person] = [:]
     
     init() {
         setCategory()
         setPerson()
-        setMemo()
     }
     
     //MARK: - 카테고리
@@ -101,18 +99,18 @@ class MemoViewModel: ObservableObject {
         }
     }
     
-//    func updatePerson(id: ObjectId, memo: Memo) {
-//        do {
-//            let realm = try Realm()
-//            guard let person = realm.object(ofType: Person.self, forPrimaryKey: id) else { return }
-//            try realm.write {
-//                person.memos.append(memo)
-//            }
-//        }
-//        catch {
-//            print(error)
-//        }
-//    }
+    func updatePerson(id: ObjectId, memo: Memo) {
+        do {
+            let realm = try Realm()
+            guard let person = realm.object(ofType: Person.self, forPrimaryKey: id) else { return }
+            try realm.write {
+                person.memos.append(memo)
+            }
+        }
+        catch {
+            print(error)
+        }
+    }
     
     func deletePerson(id: ObjectId) {
         do {
@@ -130,22 +128,16 @@ class MemoViewModel: ObservableObject {
     }
     
     //MARK: - 메모
-    
-    private func setMemo() {
-        var persons: [String: Person] = [:]
-        personList.forEach { person in
-            person.memos.forEach { memo in
-                memoDict[memo.emoji] = memo.title
-            }
-        }
-        print(memoDict)
-    }
 
-//    func addMemo(emoji: String, title: String, content: String, person: ObjectId) {
-//        let memo = Memo()
-//        memo.emoji = emoji
-//        memo.title = title
-//        memo.content = content
-//        updatePerson(id: person, memo: memo)
-//    }
+    func addMemo(person: ObjectId, emoji: String, title: String, content: String) {
+        let memoType = MemoType()
+        memoType.emoji = emoji
+        memoType.title = title
+        
+        let memo = Memo()
+        memo.type = memoType
+        memo.content = content
+        
+        updatePerson(id: person, memo: memo)
+    }
 }

@@ -29,6 +29,7 @@ struct memmoApp: App {
             MemoListView()
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
                 .environmentObject(viewModel) // 이어지는 뷰에서도 동일하게 사용 가능!
+            
         }
     }
 }

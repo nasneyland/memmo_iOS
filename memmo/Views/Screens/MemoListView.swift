@@ -11,6 +11,9 @@ struct MemoListView: View {
     
     @EnvironmentObject var viewModel: MemoViewModel
     
+    @State private var typeSelection: Int = 0
+    private let viewOptions: [String] = ["그룹", "멤버", "메모"]
+    
     // 그룹 관련 변수
     @State private var selectedCategory: Category?
     @State private var showCategoryComposer: Bool = false
@@ -26,10 +29,6 @@ struct MemoListView: View {
     @State private var selectedMemoPerson: Person?
     @State private var selectedMemoCategory: Category?
     @State private var showMemoDetail: Bool = false
-    
-    @State private var typeSelection: Int = 0
-    
-    private let viewOptions: [String] = ["그룹", "사람", "메모"]
     
     var body: some View {
         NavigationView {
@@ -57,7 +56,7 @@ struct MemoListView: View {
                     } else {
                         ScrollView {
                             ForEach(viewModel.categoryList) { category in
-                                CategoryCell(category: category, showMemoDetail: $showMemoDetail, showPersonComposer: $showPersonComposer, selectedPerson: $selectedPerson, selectedPersonCategory: $selectedPersonCategory)
+                                CategoryCell(category: category, showPersonComposer: $showPersonComposer, selectedPerson: $selectedPerson, selectedPersonCategory: $selectedPersonCategory, showMemoDetail: $showMemoDetail, selectedMemoPerson: $selectedMemoPerson, selectedMemoCategory: $selectedMemoCategory)
                                     .contextMenu {
                                         Button() {
                                             selectedCategory = category
@@ -157,7 +156,7 @@ struct MemoListView: View {
                 ComposePersonView(category: $selectedPersonCategory, person: $selectedPerson)
             }
             .sheet(isPresented: $showMemoDetail) {
-                DetailMemoView(category: $selectedMemoCategory, person: $selectedMemoPerson)
+                DetailView(category: $selectedMemoCategory, person: $selectedMemoPerson)
             }
             .alert(isPresented: $deleteCategoryAlert) {
                 Alert(title: Text("삭제할 수 없음"), message: Text("그룹에 멤버가 존재하는지 확인해주세요"), dismissButton: .default(Text("확인")))
