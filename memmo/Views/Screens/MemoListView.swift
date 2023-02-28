@@ -118,15 +118,16 @@ struct MemoListView: View {
                         Text("새 메모를 생성해주세요.")
                             .foregroundColor(.gray)
                     } else {
-                        List {
-                            ForEach(viewModel.personList) { person in
-                                Section(header: Text("🧃")) {
-                                    MemoCell()
-                                }
+                        ScrollView {
+                            let keys = viewModel.memoList.map {$0.key}
+                            let values = viewModel.memoList.map {$0.value}
+                            
+                            ForEach(keys.indices, id: \.self) { i in
+                                MemoCell(type: keys[i], memos: values[i])
                             }
                         }
                         .padding(EdgeInsets(top: 0, leading: 30, bottom: 0, trailing: 20))
-                        .listStyle(.plain)
+                        .listStyle(.sidebar)
                     }
                 default:
                     Text("리스트가 존재하지 않습니다.")

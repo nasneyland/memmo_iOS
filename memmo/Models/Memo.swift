@@ -11,7 +11,7 @@ import RealmSwift
 class Memo: Object, Identifiable {
 
     @Persisted(primaryKey: true) var id: ObjectId
-    @Persisted var type: MemoType?
+    @Persisted var type: MemoType!
     @Persisted var content: String
     
     @Persisted var person = LinkingObjects(fromType: Person.self, property: "memos")

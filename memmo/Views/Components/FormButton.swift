@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct FormButton: ButtonStyle {
-    
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .padding(10)

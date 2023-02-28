@@ -61,15 +61,23 @@ struct CategoryCell: View {
                     isOpened.toggle()
                 }
             }
+            
             if isOpened {
-                ForEach(category.persons) { person in
-                    PersonCell(category: category, person: person)
-                        .padding(EdgeInsets(top: 0, leading: 30, bottom: 0, trailing: 0))
-                        .onTapGesture {
-                            selectedMemoCategory = category
-                            selectedMemoPerson = person
-                            showMemoDetail = true
+                VStack {
+                    ForEach(category.persons) { person in
+                        HStack {
+                            Image(systemName: "arrow.turn.down.right")
+                                .foregroundColor(Color.light_gray)
+                                .padding(EdgeInsets(top: 0, leading: 30, bottom: 0, trailing: 0))
+                            PersonCell(category: category, person: person)
+                                .padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 0))
+                                .onTapGesture {
+                                    selectedMemoCategory = category
+                                    selectedMemoPerson = person
+                                    showMemoDetail = true
+                                }
                         }
+                    }
                 }
             }
         }

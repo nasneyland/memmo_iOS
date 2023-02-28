@@ -16,7 +16,7 @@ struct PersonCell: View {
     var body: some View {
         HStack() {
             ProfileImage(image: loadImageFromDocumentDirectory(imageName: person.id.stringValue))
-                .padding(EdgeInsets(top: 10, leading: 0, bottom: 0, trailing: 0))
+                .padding(EdgeInsets(top: 10, leading: 0, bottom: 0, trailing: 5))
             
             VStack(alignment: .leading) {
                 HStack(alignment: .center) {
@@ -30,11 +30,11 @@ struct PersonCell: View {
                         .cornerRadius(8)
                     Spacer()
                 }
-                Text("메모 수 0개")
+                Text("메모 수 \(person.memos.count)개")
                     .font(.caption)
                     .foregroundColor(.gray)
             }
-            Text("🧃👕🐶")
+            Text(person.memos.map{$0.type.emoji}.reduce("",+))
                 .font(.system(size: 15))
         }
     }

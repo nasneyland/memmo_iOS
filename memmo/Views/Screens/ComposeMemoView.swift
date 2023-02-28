@@ -58,13 +58,16 @@ struct ComposeMemoView: View {
                         TextField("예) 아이스 바닐라 라떼", text: $content)
                     }
                     Button {
-                        viewModel.addMemo(person: person!.id, emoji: emoji, title: title, content: content)
-                        dismiss()
+                        if emoji != "" && title != "" && content != "" {
+//                            viewModel.addMemo(person: person!.id, emoji: emoji, title: title, content: content)
+                            viewModel.addMemo(person: person!.id, type: viewModel.memoTypeDatas.first!.id, content: "test")
+                            dismiss()
+                        }
                     } label: {
                         HStack {
                             Spacer()
                             Text("추가하기")
-                                .foregroundColor(.black)
+                                .foregroundColor(emoji == "" || title == "" || content == "" ? .light_gray : .black)
                             Spacer()
                         }
                     }

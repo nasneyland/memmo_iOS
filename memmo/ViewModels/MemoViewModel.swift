@@ -13,14 +13,18 @@ class MemoViewModel: ObservableObject {
     
     @ObservedResults(Category.self) var categoryDatas
     @ObservedResults(Person.self) var personDatas
+    @ObservedResults(MemoType.self) var memoTypeDatas
     @ObservedResults(Memo.self) var memoDatas
     
     @Published var categoryList: [Category] = []
     @Published var personList: [Person] = []
+    @Published var memoTypeList: [MemoType] = []
+    @Published var memoList: [MemoType: [(Person, String)]] = [:]
     
     init() {
         setCategory()
         setPerson()
+        setMemo()
     }
     
     //MARK: - 카테고리
@@ -128,7 +132,31 @@ class MemoViewModel: ObservableObject {
     }
     
     //MARK: - 메모
+    
+    func setMemo() {
+        memoTypeList = Array(memoTypeDatas)
+        
+        personList.forEach { person in
+            person.memos.forEach { memo in
+                memoList[memo.type, default: []].append((person, memo.content))
+            }
+        }
+    }
 
+    func addMemo(person: ObjectId, type: ObjectId, content: String) {
+        do {
+            let realm = try Realm()
+            guard let type = realm.object(ofType: MemoType.self, forPrimaryKey: type) else { return }
+            let memo = Memo()
+            memo.type = type
+            memo.content = content
+            updatePerson(id: person, memo: memo)
+        }
+        catch {
+            print(error)
+        }
+    }
+    
     func addMemo(person: ObjectId, emoji: String, title: String, content: String) {
         let memoType = MemoType()
         memoType.emoji = emoji

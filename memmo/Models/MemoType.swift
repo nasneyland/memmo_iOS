@@ -18,3 +18,4 @@ class MemoType: Object, Identifiable {
         "id"
     }
 }
+
