@@ -12,9 +12,11 @@ struct EmojiPickerView: View {
     @EnvironmentObject var viewModel: MemoViewModel
     @Environment(\.dismiss) private var dismiss
     
-    @State private var typeSelection: Int = 0
     private let viewOptions: [String] = ["내이모지", "전체"]
+    @State private var typeSelection: Int = 0
     
+    @State var person: Person
+    @Binding var content: String
     @Binding var selectedType: MemoType
     @Binding var selection: Int?
     
@@ -42,12 +44,26 @@ struct EmojiPickerView: View {
                             .foregroundColor(.gray)
                     } else {
                         ForEach(Array(zip(viewModel.memoTypeList.indices, viewModel.memoTypeList)), id: \.0) { (i,type) in
-                            MemoTypeCell(type: type, memoCount: viewModel.memoList[i].count)
-                                .onTapGesture {
-                                    selectedType = type
-                                    selection = typeSelection
-                                    dismiss()
+                            HStack {
+                                Text(type.emoji)
+                                    .font(.system(size: 30))
+                                    .padding(10)
+                                    .background(Color.system_gray)
+                                    .cornerRadius(15)
+                                Text(type.title)
+                                    .font(.body)
+                                Spacer()
+                                if person.memos.filter {$0.type.id == type.id}.count == 1 {
+                                    Image(systemName: "checkmark")
+                                        .foregroundColor(Color.blue)
                                 }
+                            }
+                            .onTapGesture {
+                                content = person.memos.filter {$0.type.id == type.id}.first?.content ?? ""
+                                selectedType = type
+                                selection = typeSelection
+                                dismiss()
+                            }
                         }
                     }
                 case 1:

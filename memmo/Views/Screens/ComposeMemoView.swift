@@ -22,7 +22,7 @@ struct ComposeMemoView: View {
     
     var body: some View {
         NavigationView {
-            VStack {
+            VStack() {
                 // 네비게이션
                 Text("새 메모 생성")
                     .font(.headline)
@@ -40,7 +40,7 @@ struct ComposeMemoView: View {
                         .foregroundColor(Color.black)
                     ){
                         HStack() {
-                            Button(selectedType.emoji == "" ? "🫥" : selectedType.emoji ?? "🫥") {
+                            Button(selectedType.emoji == "" ? "🫥" : selectedType.emoji) {
                                 showEmojiPicker = true
                             }
                             .buttonStyle(BorderlessButtonStyle())
@@ -53,7 +53,7 @@ struct ComposeMemoView: View {
                             .foregroundColor(.black)
                         }
                     }
-                    Section(header: Text("내용")
+                    Section(header:Text("내용")
                         .bold()
                         .foregroundColor(Color.black)
                     ){
@@ -61,7 +61,17 @@ struct ComposeMemoView: View {
                     }
                     Button {
                         if selectedType.emoji != "" && selectedType.title != "" && content != "" {
-                            viewModel.addMemo(person: person!.id, emoji: selectedType.emoji, title: selectedType.title, content: content)
+                            if selection == 0 {
+                                let memo = person!.memos.filter({$0.type.id == selectedType.id})
+                                
+                                if memo.count == 1 {
+                                    viewModel.updateMemo(id: memo.first!.id, content: content)
+                                } else {
+                                    viewModel.addMemo(person: person!.id, type: selectedType.id, content: content)
+                                }
+                            } else {
+                                viewModel.addMemo(person: person!.id, emoji: selectedType.emoji, title: selectedType.title, content: content)
+                            }
                             dismiss()
                         }
                     } label: {
@@ -75,12 +85,12 @@ struct ComposeMemoView: View {
                 }
                 .scrollContentBackground(.hidden)
                 .background(Color.system_gray)
-            }
-            .sheet(isPresented: $showEmojiPicker) {
-                NavigationView {
-                    EmojiPickerView(selectedType: $selectedType, selection: $selection)
-                        .navigationTitle("이모지")
-                        .navigationBarTitleDisplayMode(.inline)
+                .sheet(isPresented: $showEmojiPicker) {
+                    NavigationView {
+                        EmojiPickerView(person: person!, content: $content, selectedType: $selectedType, selection: $selection)
+                            .navigationTitle("이모지")
+                            .navigationBarTitleDisplayMode(.inline)
+                    }
                 }
             }
         }

@@ -157,20 +157,21 @@ class MemoViewModel: ObservableObject {
     
     func setMemo() {
         memoTypeList = Array(memoTypeDatas)
-        
+
         var memoDict: [MemoType: [(Person, String)]] = [:]
-        
+
         personList.forEach { person in
             person.memos.forEach { memo in
                 memoDict[memo.type, default: []].append((person, memo.content))
             }
         }
-        
+
         self.memoTypeList = memoDict.map {$0.key}
         self.memoList = memoDict.map {$0.value}
     }
-
+    
     func addMemo(person: ObjectId, type: ObjectId, content: String) {
+        print("111")
         do {
             let realm = try Realm()
             guard let type = realm.object(ofType: MemoType.self, forPrimaryKey: type) else { return }
@@ -185,6 +186,7 @@ class MemoViewModel: ObservableObject {
     }
     
     func addMemo(person: ObjectId, emoji: String, title: String, content: String) {
+        print("222")
         let memoType = MemoType()
         memoType.emoji = emoji
         memoType.title = title
@@ -194,5 +196,20 @@ class MemoViewModel: ObservableObject {
         memo.content = content
         
         updatePerson(id: person, memo: memo)
+    }
+    
+    func updateMemo(id: ObjectId, content: String) {
+        print("333")
+        do {
+            let realm = try Realm()
+            guard let memo = realm.object(ofType: Memo.self, forPrimaryKey: id) else { return }
+            try realm.write {
+                memo.content = content
+            }
+        }
+        catch {
+            print(error)
+        }
+        setDatas()
     }
 }
