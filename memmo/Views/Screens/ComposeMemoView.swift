@@ -15,8 +15,9 @@ struct ComposeMemoView: View {
     @Binding var person: Person?
     
     @State private var showEmojiPicker: Bool = false
-    @State private var emoji: String = ""
-    @State private var title: String = ""
+    
+    @State private var selection: Int? = 2
+    @State private var selectedType: MemoType = MemoType()
     @State private var content: String = ""
     
     var body: some View {
@@ -39,11 +40,12 @@ struct ComposeMemoView: View {
                         .foregroundColor(Color.black)
                     ){
                         HStack() {
-                            Button(emoji == "" ? "🫥" : emoji) {
-                                
+                            Button(selectedType.emoji == "" ? "🫥" : selectedType.emoji ?? "🫥") {
+                                showEmojiPicker = true
                             }
                             .buttonStyle(BorderlessButtonStyle())
-                            TextField("예) 좋아하는 음료는?", text: $title)
+                            TextField("예) 좋아하는 음료는?", text: $selectedType.title)
+                                .disabled(selection == 0)
                             Button("+") {
                                 showEmojiPicker = true
                             }
@@ -58,16 +60,15 @@ struct ComposeMemoView: View {
                         TextField("예) 아이스 바닐라 라떼", text: $content)
                     }
                     Button {
-                        if emoji != "" && title != "" && content != "" {
-//                            viewModel.addMemo(person: person!.id, emoji: emoji, title: title, content: content)
-                            viewModel.addMemo(person: person!.id, type: viewModel.memoTypeDatas.first!.id, content: "test")
+                        if selectedType.emoji != "" && selectedType.title != "" && content != "" {
+                            viewModel.addMemo(person: person!.id, emoji: selectedType.emoji, title: selectedType.title, content: content)
                             dismiss()
                         }
                     } label: {
                         HStack {
                             Spacer()
                             Text("추가하기")
-                                .foregroundColor(emoji == "" || title == "" || content == "" ? .light_gray : .black)
+                                .foregroundColor(selectedType.emoji == "" || selectedType.title == "" || content == "" ? .light_gray : .black)
                             Spacer()
                         }
                     }
@@ -77,7 +78,7 @@ struct ComposeMemoView: View {
             }
             .sheet(isPresented: $showEmojiPicker) {
                 NavigationView {
-                    EmojiPickerView(selectedEmoji: $emoji)
+                    EmojiPickerView(selectedType: $selectedType, selection: $selection)
                         .navigationTitle("이모지")
                         .navigationBarTitleDisplayMode(.inline)
                 }

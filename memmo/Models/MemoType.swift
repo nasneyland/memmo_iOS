@@ -17,5 +17,13 @@ class MemoType: Object, Identifiable {
     override class func primaryKey() -> String? {
         "id"
     }
+    
+    override init() {
+        
+    }
+    
+    init(emoji: String) {
+        self.emoji = emoji
+    }
 }
 

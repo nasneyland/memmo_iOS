@@ -152,7 +152,6 @@
 				FD4256A029992C1400787AE9 /* Person.swift */,
 				FD4256F229ACA25C00787AE9 /* MemoType.swift */,
 				FD4256A229992C8700787AE9 /* Memo.swift */,
-				FD4256F929ACC2E600787AE9 /* Emoji.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -165,6 +164,7 @@
 				FD4256D929A6274400787AE9 /* ComposePersonView.swift */,
 				FD4256F029AC9D3100787AE9 /* ComposeMemoView.swift */,
 				FD4256EC29AB3B7100787AE9 /* DetailView.swift */,
+				FD4256F729ACBC6F00787AE9 /* EmojiPickerView.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -214,13 +214,20 @@
 		FD4256E329A77E2100787AE9 /* SubViews */ = {
 			isa = PBXGroup;
 			children = (
-				FD4256F729ACBC6F00787AE9 /* EmojiPickerView.swift */,
 				FD4256E429A77E4000787AE9 /* CategoryCell.swift */,
 				FD4256E629A7802D00787AE9 /* PersonCell.swift */,
 				FD4256FB29AE51A600787AE9 /* MemoTypeCell.swift */,
 				FD4256932999043500787AE9 /* MemoCell.swift */,
 			);
 			path = SubViews;
+			sourceTree = "<group>";
+		};
+		FD4256FD29AFDE1000787AE9 /* Enums */ = {
+			isa = PBXGroup;
+			children = (
+				FD4256F929ACC2E600787AE9 /* Emoji.swift */,
+			);
+			path = Enums;
 			sourceTree = "<group>";
 		};
 		FD44D2172998FA1E00E8D0DD = {
@@ -251,6 +258,7 @@
 				FD44D2292998FA1F00E8D0DD /* Preview Content */,
 				FD4256CC29A1C95F00787AE9 /* Resources */,
 				FD4256AA299CB68000787AE9 /* Extensions */,
+				FD4256FD29AFDE1000787AE9 /* Enums */,
 				FD42569D29992B2C00787AE9 /* Models */,
 				FD4256C329A131C500787AE9 /* ViewModels */,
 				FD4256902999039700787AE9 /* Views */,

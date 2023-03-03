@@ -67,5 +67,6 @@ struct DetailView: View {
         .sheet(isPresented: $showMemoComposer) {
             ComposeMemoView(person: $person)
         }
+        .ignoresSafeArea(edges: .bottom)
     }
 }

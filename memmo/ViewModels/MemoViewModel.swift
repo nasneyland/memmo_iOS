@@ -19,9 +19,13 @@ class MemoViewModel: ObservableObject {
     @Published var categoryList: [Category] = []
     @Published var personList: [Person] = []
     @Published var memoTypeList: [MemoType] = []
-    @Published var memoList: [MemoType: [(Person, String)]] = [:]
+    @Published var memoList: [[(Person, String)]] = [[]]
     
     init() {
+        setDatas()
+    }
+    
+    private func setDatas() {
         setCategory()
         setPerson()
         setMemo()
@@ -38,7 +42,7 @@ class MemoViewModel: ObservableObject {
         category.name = name
         category.color = color
         $categoryDatas.append(category)
-        setCategory()
+        setDatas()
     }
     
     func updateCategory(id: ObjectId, name: String, color: String = "gray") {
@@ -53,7 +57,7 @@ class MemoViewModel: ObservableObject {
         catch {
             print(error)
         }
-        setCategory()
+        setDatas()
     }
     
     func updateCategory(id: ObjectId, person: Person, image: UIImage?) {
@@ -68,8 +72,7 @@ class MemoViewModel: ObservableObject {
         catch {
             print(error)
         }
-        setCategory()
-        setPerson()
+        setDatas()
     }
     
     func deleteCategory(id: ObjectId) {
@@ -83,7 +86,7 @@ class MemoViewModel: ObservableObject {
         catch {
             print(error)
         }
-        setCategory()
+        setDatas()
     }
     
     //MARK: - 사람
@@ -103,6 +106,25 @@ class MemoViewModel: ObservableObject {
         }
     }
     
+    func updatePerson(id: ObjectId, name: String) {
+        do {
+            let realm = try Realm()
+            guard let person = realm.object(ofType: Person.self, forPrimaryKey: id) else { return }
+            try realm.write {
+                person.name = name
+            }
+        }
+        catch {
+            print(error)
+        }
+        setDatas()
+    }
+    
+    func updatePerson(id: ObjectId, name: String, categoryId: ObjectId) {
+        deletePerson(id: id)
+        addPerson(name: name, imageData: nil, categoryId: categoryId)
+    }
+    
     func updatePerson(id: ObjectId, memo: Memo) {
         do {
             let realm = try Realm()
@@ -114,6 +136,7 @@ class MemoViewModel: ObservableObject {
         catch {
             print(error)
         }
+        setDatas()
     }
     
     func deletePerson(id: ObjectId) {
@@ -127,8 +150,7 @@ class MemoViewModel: ObservableObject {
         catch {
             print(error)
         }
-        setPerson()
-        setCategory()
+        setDatas()
     }
     
     //MARK: - 메모
@@ -136,11 +158,16 @@ class MemoViewModel: ObservableObject {
     func setMemo() {
         memoTypeList = Array(memoTypeDatas)
         
+        var memoDict: [MemoType: [(Person, String)]] = [:]
+        
         personList.forEach { person in
             person.memos.forEach { memo in
-                memoList[memo.type, default: []].append((person, memo.content))
+                memoDict[memo.type, default: []].append((person, memo.content))
             }
         }
+        
+        self.memoTypeList = memoDict.map {$0.key}
+        self.memoList = memoDict.map {$0.value}
     }
 
     func addMemo(person: ObjectId, type: ObjectId, content: String) {

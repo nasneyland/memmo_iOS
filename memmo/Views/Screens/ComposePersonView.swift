@@ -13,8 +13,11 @@ struct ComposePersonView: View {
     @EnvironmentObject var viewModel: MemoViewModel
     @Environment(\.dismiss) private var dismiss
     
-    @Binding var category: Category?
     @Binding var person: Person?
+    @Binding var categoryIndex: Int!
+    
+    @State private var categorySelection: Int = 0
+    @State private var category: Category? = nil
     
     @State private var selectedItem: PhotosPickerItem? = nil
     @State private var selectedImageData: Data? = nil
@@ -66,33 +69,46 @@ struct ComposePersonView: View {
                             .bold()
                             .foregroundColor(Color.black)
                         ){
-                            if let category = category {
-                                HStack() {
-                                    Image("folder_\(category.color)")
+                            Menu(content: {
+                                Picker("", selection: $categorySelection) {
+                                    ForEach(Array(zip(viewModel.categoryList.indices, viewModel.categoryList)), id: \.0) { (i,category) in
+                                        HStack() {
+                                            Image("folder_\(category.color)")
+                                                .resizable()
+                                                .scaledToFit()
+                                                .aspectRatio(contentMode: .fit)
+                                            Text(category.name)
+                                        }
+                                        .tag(i)
+                                    }
+                                }
+                            }, label: {
+                                HStack {
+                                    Image("folder_\(viewModel.categoryList[categorySelection].color)")
                                         .resizable()
                                         .scaledToFit()
-                                        .frame(height: 20)
-                                    Text(category.name)
-                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                        .aspectRatio(contentMode: .fit)
+                                        .frame(width: 25, height: 25, alignment: .center)
+                                    Text(viewModel.categoryList[categorySelection].name)
+                                        .foregroundColor(.black)
+                                    Spacer()
                                 }
-//                                .padding(10)
-//                                .background(.white)
-//                                .cornerRadius(10)
-                            } else {
-        //                        Picker("", selection: $categorySelection) {
-        //                            ForEach(Array(zip(viewModel.categoryList.indices, viewModel.categoryList)), id: \.0) { (i,category) in
-        //                                Text(category.name)
-        //                                    .tag(category.id)
-        //                            }
-        //                        }
+                            })
+                            .onAppear {
+                                categorySelection = categoryIndex
                             }
                         }
                         Button {
-                            if category != nil && !personName.isEmpty {
-                                if let person = person {
-                                    viewModel.addPerson(name: personName, imageData: selectedImageData, categoryId: category!.id)
+                            if !personName.isEmpty {
+                                if person == nil {
+                                    viewModel.addPerson(name: personName, imageData: selectedImageData, categoryId: viewModel.categoryList[categorySelection].id)
                                 } else {
-                                    viewModel.addPerson(name: personName, imageData: selectedImageData, categoryId: category!.id)
+                                    if categoryIndex == categorySelection {
+                                        viewModel.updatePerson(id: person!.id, name: personName)
+                                    } else {
+                                        viewModel.updatePerson(id: person!.id, name: personName, categoryId: viewModel.categoryList[categorySelection].id)
+                                    }
+                                    
                                 }
                                 dismiss()
                             }
@@ -100,7 +116,7 @@ struct ComposePersonView: View {
                             HStack {
                                 Spacer()
                                 Text(person == nil ? "생성하기" : "수정하기")
-                                    .foregroundColor(category == nil || personName.isEmpty ? .light_gray : .black)
+                                    .foregroundColor(personName.isEmpty ? .light_gray : .black)
                                 Spacer()
                             }
                         }
@@ -112,6 +128,8 @@ struct ComposePersonView: View {
             }
         }
         .onAppear() {
+            category = viewModel.categoryList[categoryIndex]
+            
             if let person = person {
                 personName = person.name
             }

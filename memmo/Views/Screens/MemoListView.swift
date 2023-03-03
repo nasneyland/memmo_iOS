@@ -7,9 +7,16 @@
 
 import SwiftUI
 
+enum AlertType {
+    case deleteCategory
+    case deletePerson
+}
 struct MemoListView: View {
     
     @EnvironmentObject var viewModel: MemoViewModel
+    
+    @State private var showAlert: Bool = false
+    @State private var alertType: AlertType = .deleteCategory
     
     @State private var typeSelection: Int = 0
     private let viewOptions: [String] = ["그룹", "멤버", "메모"]
@@ -17,13 +24,11 @@ struct MemoListView: View {
     // 그룹 관련 변수
     @State private var selectedCategory: Category?
     @State private var showCategoryComposer: Bool = false
-    @State private var deleteCategoryAlert: Bool = false
     
     // 사람 관련 변수
     @State private var selectedPerson: Person?
-    @State private var selectedPersonCategory: Category?
+    @State private var selectedPersonCategory: Int?
     @State private var showPersonComposer: Bool = false
-    @State private var deletePersonAlert: Bool = false
     
     // 메모 관련 변수
     @State private var selectedMemoPerson: Person?
@@ -55,8 +60,8 @@ struct MemoListView: View {
                             .foregroundColor(.gray)
                     } else {
                         ScrollView {
-                            ForEach(viewModel.categoryList) { category in
-                                CategoryCell(category: category, showPersonComposer: $showPersonComposer, selectedPerson: $selectedPerson, selectedPersonCategory: $selectedPersonCategory, showMemoDetail: $showMemoDetail, selectedMemoPerson: $selectedMemoPerson, selectedMemoCategory: $selectedMemoCategory)
+                            ForEach(Array(zip(viewModel.categoryList.indices, viewModel.categoryList)), id: \.0) { (index,category) in
+                                CategoryCell(category: (index, category), showPersonComposer: $showPersonComposer, selectedPerson: $selectedPerson, selectedPersonCategory: $selectedPersonCategory, showMemoDetail: $showMemoDetail, selectedMemoPerson: $selectedMemoPerson, selectedMemoCategory: $selectedMemoCategory)
                                     .contextMenu {
                                         Button() {
                                             selectedCategory = category
@@ -68,7 +73,8 @@ struct MemoListView: View {
                                             if category.persons.count == 0 {
                                                 viewModel.deleteCategory(id: category.id)
                                             } else {
-                                                self.deleteCategoryAlert = true
+                                                alertType = .deleteCategory
+                                                self.showAlert = true
                                             }
                                         } label: {
                                             Label("삭제하기", systemImage: "trash.circle")
@@ -85,7 +91,7 @@ struct MemoListView: View {
                             .foregroundColor(.gray)
                     } else {
                         ScrollView {
-                            ForEach(viewModel.categoryList) { category in
+                            ForEach(Array(zip(viewModel.categoryList.indices, viewModel.categoryList)), id: \.0) { (index,category) in
                                 ForEach(category.persons) { person in
                                     PersonCell(category: category, person: person)
                                         .onTapGesture {
@@ -95,14 +101,16 @@ struct MemoListView: View {
                                         }
                                         .contextMenu {
                                             Button() {
-                                                selectedPersonCategory = category
+                                                selectedPersonCategory = index
                                                 selectedPerson = person
                                                 showPersonComposer = true
                                             } label: {
                                                 Label("수정하기", systemImage: "pencil.circle")
                                             }
                                             Button(role: .destructive) {
-                                                viewModel.deletePerson(id: person.id)
+                                                selectedPerson = person
+                                                alertType = .deletePerson
+                                                showAlert = true
                                             } label: {
                                                 Label("삭제하기", systemImage: "trash.circle")
                                             }
@@ -114,16 +122,13 @@ struct MemoListView: View {
                     }
                 case 2:
                     // 메모 보기
-                    if viewModel.personList.isEmpty {
+                    if viewModel.memoTypeList.isEmpty {
                         Text("새 메모를 생성해주세요.")
                             .foregroundColor(.gray)
                     } else {
                         ScrollView {
-                            let keys = viewModel.memoList.map {$0.key}
-                            let values = viewModel.memoList.map {$0.value}
-                            
-                            ForEach(keys.indices, id: \.self) { i in
-                                MemoCell(type: keys[i], memos: values[i])
+                            ForEach(viewModel.memoTypeList.indices, id: \.self) { i in
+                                MemoCell(type: viewModel.memoTypeList[i], memos: viewModel.memoList[i])
                             }
                         }
                         .padding(EdgeInsets(top: 0, leading: 30, bottom: 0, trailing: 20))
@@ -140,13 +145,11 @@ struct MemoListView: View {
             
             // 네비게이션 버튼 설정
             .toolbar {
-                Button(action: {
+                Button {
                     selectedCategory = nil
                     showCategoryComposer = true
-                }) {
-                    HStack {
-                        Image(systemName: "plus")
-                    }
+                } label: {
+                    Image(systemName: "plus")
                 }
             }
             .foregroundColor(.black)
@@ -154,16 +157,26 @@ struct MemoListView: View {
                 ComposeCategoryView(category: $selectedCategory)
             }
             .sheet(isPresented: $showPersonComposer) {
-                ComposePersonView(category: $selectedPersonCategory, person: $selectedPerson)
+                ComposePersonView(person: $selectedPerson, categoryIndex: $selectedPersonCategory)
             }
             .sheet(isPresented: $showMemoDetail) {
                 DetailView(category: $selectedMemoCategory, person: $selectedMemoPerson)
             }
-            .alert(isPresented: $deleteCategoryAlert) {
-                Alert(title: Text("삭제할 수 없음"), message: Text("그룹에 멤버가 존재하는지 확인해주세요"), dismissButton: .default(Text("확인")))
-            }
-            .alert(isPresented: $deletePersonAlert) {
-                Alert(title: Text("멤버 삭제하기"), message: Text("정말 삭제하시겠습니까?"), dismissButton: .default(Text("확인")))
+            .alert(isPresented: $showAlert) {
+                switch alertType {
+                case .deleteCategory:
+                    return Alert(title: Text("삭제할 수 없음"), message: Text("그룹에 멤버가 존재하는지 확인해주세요"), dismissButton: .default(Text("확인")))
+                case .deletePerson:
+                    return Alert(
+                        title: Text("멤버 삭제하기"),
+                        message: Text("해당 멤버의 메모가 전부 삭제됩니다. 정말 삭제하시겠습니까?"),
+                        primaryButton: .destructive(Text("삭제")) {
+                            print("삭제")
+                            viewModel.deletePerson(id: selectedPerson!.id)
+                        },
+                        secondaryButton: .cancel(Text("취소"))
+                    )
+                }
             }
         }
     }

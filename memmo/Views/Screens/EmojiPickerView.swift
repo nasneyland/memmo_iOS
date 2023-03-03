@@ -13,9 +13,10 @@ struct EmojiPickerView: View {
     @Environment(\.dismiss) private var dismiss
     
     @State private var typeSelection: Int = 0
-    private let viewOptions: [String] = ["내이모지", "추천", "전체"]
+    private let viewOptions: [String] = ["내이모지", "전체"]
     
-    @Binding var selectedEmoji: String
+    @Binding var selectedType: MemoType
+    @Binding var selection: Int?
     
     let columns = [GridItem(.flexible()),GridItem(.flexible()),GridItem(.flexible()),GridItem(.flexible()),GridItem(.flexible())]
     
@@ -32,49 +33,45 @@ struct EmojiPickerView: View {
             })
             .pickerStyle(SegmentedPickerStyle())
             .padding(EdgeInsets(top: 3, leading: 20, bottom: 3, trailing: 20))
-            
+
             ScrollView {
                 switch typeSelection {
                 case 0:
-                    ForEach(viewModel.memoTypeList) { type in
-                        HStack {
-                            Text(type.emoji)
-                                .font(.system(size: 30))
-                            Text(type.title)
-                                .font(.system(size: 15))
-                            Spacer()
-                            Image(systemName: "checkmark")
-                                .foregroundColor(.dark_blue)
-                                .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 10))
+                    if viewModel.memoTypeList.count == 0 {
+                        Text("내 이모지를 생성해주세요.")
+                            .foregroundColor(.gray)
+                    } else {
+                        ForEach(Array(zip(viewModel.memoTypeList.indices, viewModel.memoTypeList)), id: \.0) { (i,type) in
+                            MemoTypeCell(type: type, memoCount: viewModel.memoList[i].count)
+                                .onTapGesture {
+                                    selectedType = type
+                                    selection = typeSelection
+                                    dismiss()
+                                }
                         }
-                        .padding(10)
-                        .background(Color.system_gray)
-                        .cornerRadius(15)
                     }
                 case 1:
-                    Text("111")
-                case 2:
-                    ForEach(0..<Emoji.types.count, id: \.self) { index in
+                    ForEach(Emoji.list, id:\.self.0) { type in
                         HStack() {
-                            Text(Emoji.types[index])
+                            Text(type.0)
                                 .font(.system(size: 15))
-                                .padding(EdgeInsets(top: 20, leading: 30, bottom: 0, trailing: 10))
+                                .padding(EdgeInsets(top: 20, leading: 10, bottom: 0, trailing: 10))
                             Spacer()
                         }
                         LazyVGrid(columns: columns) {
-                            ForEach(Emoji.values[index], id: \.self) { emoji in
+                            ForEach(type.1, id:\.self) { emoji in
                                 Text(emoji)
                                     .font(.system(size: 30))
                                     .padding(10)
-                                    .background(selectedEmoji != emoji ? Color.system_gray : Color.light_orange)
+                                    .background(Color.system_gray)
                                     .cornerRadius(15)
                                     .onTapGesture {
-                                        selectedEmoji = String(emoji)
+                                        selectedType = MemoType(emoji: emoji)
+                                        selection = typeSelection
                                         dismiss()
                                     }
                             }
                         }
-                        .padding(EdgeInsets(top: 10, leading: 30, bottom: 10, trailing: 30))
                     }
                 default:
                     Text("이모지 정보가 없습니다.")

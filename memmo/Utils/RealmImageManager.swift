@@ -19,7 +19,6 @@ func saveImageToDocumentDirectory(imageName: String, image: UIImage?) {
     // 3. 이미지 압축(image.pngData())
     // 압축할거면 jpegData로~(0~1 사이 값)
     guard let image = image, let data = image.pngData() else {
-        print("압축이 실패했습니다.")
         return
     }
     
@@ -29,9 +28,7 @@ func saveImageToDocumentDirectory(imageName: String, image: UIImage?) {
         // 4-2. 이미지가 존재한다면 기존 경로에 있는 이미지 삭제
         do {
             try FileManager.default.removeItem(at: imageURL)
-            print("이미지 삭제 완료")
         } catch {
-            print("이미지를 삭제하지 못했습니다.")
         }
     }
     
@@ -39,9 +36,7 @@ func saveImageToDocumentDirectory(imageName: String, image: UIImage?) {
     // 파일을 저장하는 등의 행위는 조심스러워야하기 때문에 do try catch 문을 사용하는 편임
     do {
         try data.write(to: imageURL)
-        print("이미지 저장완료")
     } catch {
-        print("이미지를 저장하지 못했습니다.")
     }
 }
 
@@ -72,9 +67,7 @@ func deleteImageFromDocumentDirectory(imageName: String) {
     if FileManager.default.fileExists(atPath: imageURL.path) {
         do {
             try FileManager.default.removeItem(at: imageURL)
-            print("이미지 삭제 완료")
         } catch {
-            print("이미지를 삭제하지 못했습니다.")
         }
     }
 }
