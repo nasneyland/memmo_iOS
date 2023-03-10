@@ -1,9 +1,10 @@
 # memmo_iOS
 [사람기억 앱] swiftUI + MVVM + Realm<br/><br/>
-멤버 별로 메모를 보기좋게 관리하면 어떨까? 싶어 만들게 되었습니다. <br/>
-먼저 그룹을 생성하고 각 그룹에 멤버를 추가합니다. 멤버에게는 메모를 달 수 있는데 이모지와 타이틀로 어떤 질문에 대한 답변을 달 건지 지정하고 메모합니다.<br/>
+멤버 별로 메모를 모아볼 수 있는 앱입니다. <br/>
+먼저 그룹을 생성하고 각 그룹에 멤버를 추가합니다.<br/>
+멤버에게 이모지와 타이틀로 어떤 질문에 대한 답변을 달 건지 지정하고 메모합니다.<br/>
 예를들어, 가족의 옷 사이즈를 기록해놓는다고 하면 “가족들” 그룹에 가족들을 멤버로 추가하고 “👕 옷사이즈” 이모지에 각각 사이즈를 추가합니다. <br/>
-이렇게 추가하면 메모보기 타입에서 옷사이즈를 클릭하면 전체를 모아볼 수도 있습니다.<br/>
+이렇게 추가하면 메모보기 타입에서 옷사이즈를 클릭하면 전체를 모아볼 수도 있습니다.<br/><br/>
 
 <img src="https://raw.githubusercontent.com/nasneyland/nasneyland/main/memmo/memmo_01.jpeg"  width="120"> <img src="https://raw.githubusercontent.com/nasneyland/nasneyland/main/memmo/memmo_02.jpeg"  width="120">
 <img src="https://raw.githubusercontent.com/nasneyland/nasneyland/main/memmo/memmo_03.jpeg"  width="120">
